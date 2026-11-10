@@ -53,15 +53,16 @@ Thickness: the bag is 57 mm deep and the MacBook takes 16.8 mm. Aim for ≤ 25 m
 
 Our own key PCB, wired straight to a nice!nano. No shift register.
 
-- **One PCB**, 345 × 118 mm: a band under both halves, filled in between them down to 2 mm
+- **One PCB**, 345 × 120 mm: a band under both halves, filled in between them down to 2 mm
   above the trackpad pocket (room for traces around the thumb clusters). Ergogen generates it with parts placed and nets assigned; `npm run route`
   routes it.
 - **Matrix:** 10 rows × 7 columns, 17 GPIOs. Rows R0–R4 are the left half (num row to bottom
   row), R5–R9 the right. Columns C0 (outer) to C5 (inner) are shared by both halves; C6 is an
   extra column for thumb keys. Diodes are col2row: column → switch → diode → row.
 - **Parts:** 64 Kailh Choc v1 switches in Kailh hotswap sockets, 64 SOD-123 diodes (1N4148W),
-  a nice!nano v2, a JST-PH 2-pin battery connector, an SMD reset button and a LiPo. No power
-  switch in v1; the firmware sleeps when idle.
+  a nice!nano v2, a JST-PH 2-pin battery connector, an SMD reset button, a LiPo, and an
+  MSK-12C02 slide switch between the battery and the nice!nano. The switch sits on a small PCB
+  tab at the back edge, right of the USB port, and its lever reaches into a slot in the case wall.
 - **7 M3 mounting holes** where there's no key (see the case section).
 - **Everything but the switches is on the back** (hotswap sockets, diodes, nice!nano, battery
   connector, reset button), so the top of the board is flat under the case.
@@ -158,7 +159,7 @@ them wired).
 - **Tray:** 2 mm floor, 2.5 mm wall to 9.6 mm. Posts with M3 heat-set inserts; 30 small posts
   hold the PCB up at 8.0 mm, placed clear of every socket, diode and the nice!nano. Sloped ribs
   carry the trackpad so its top is level and flush with the palm deck. Openings: USB notch at
-  the back center, a push-out hole under the trackpad, a pin hole under the reset button.
+  the back center, the power switch slot next to it, a push-out hole under the trackpad, a pin hole under the reset button.
 - **Top:** a 2.2 mm key deck that rests on the PCB and doubles as the switch plate (1.2 mm lip,
   13.8 mm openings), and a 4 mm palm deck, hollowed underneath, around the trackpad pocket.
 - **Screws:** 7 × M3×8 through the top and PCB, 8 × M3×6 in the palm area, into 15 inserts.
@@ -178,7 +179,7 @@ touching pads or the board edge (cosmetic; PCBWay trims silkscreen off pads).
 Router settings that matter (in `scripts/route.sh`): fanout off (it added a via at every SMD
 pad), neckdown on (traces need it to pass between switch pads), 0.5 mm copper-to-edge.
 
-- `fab/macbook/flatwell-gerbers.zip`: upload to PCBWay. 2 layers, 345 × 118 mm, 1.6 mm FR-4,
+- `fab/macbook/flatwell-gerbers.zip`: upload to PCBWay. 2 layers, 345 × 120 mm, 1.6 mm FR-4,
   HASL lead-free, any solder mask color.
 - `fab/macbook/flatwell-bom.csv` and `flatwell-cpl.csv`: for PCBWay's assembly service, which
   can place the 64 diodes (bottom side). Hotswap sockets, nice!nano, battery connector and reset

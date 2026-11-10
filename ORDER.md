@@ -1,94 +1,136 @@
-# Flatwell v1: what to order
+# Flatwell v1: order checklist
 
-Everything needed to build one keyboard. The files are in [`fab/macbook/`](fab/macbook/).
+Everything needed to build one keyboard, in the order to buy it. All files are in
+[`fab/macbook/`](fab/macbook/).
 
 > **Status: untested prototype.** No board or case has been made yet. The PCB passes KiCad's
 > design-rule check and the firmware compiles, but nothing has been checked against real parts.
-> Do the [checks](#before-ordering) first. Expect that v1 may need a second revision.
+> v1 may need a second revision.
 
-## Before ordering
+## Step 0: check your switches (free)
 
-1. Print [`fab/macbook/flatwell-print.html`](fab/macbook/flatwell-print.html) at 100% (it is
-   the back of the PCB at true size). Measure the 50 mm bar.
-2. Lay a nice!nano on its outline (chips facing you, USB at the board edge), and a Choc switch
-   with a hotswap socket on one key position. Everything must line up with the pads and holes.
-3. Print [`preview/print.html`](preview/print.html), tape the halves, set a Magic Trackpad on
-   it and try the key positions with your hands.
+This board only takes **Kailh Choc v1** low-profile switches (also sold as "PG1350").
 
-## 1. PCB (PCBWay, "PCB Instant Quote")
+| Yours look like | Fits? |
+| --- | --- |
+| Low, flat switch, about 11 mm tall in total. Stem has **two thin slots** side by side. Three pins: a fat center post and two thin metal legs. | Yes: Choc v1 |
+| Tall switch with a **+ shaped** stem (Cherry MX, Gateron, Kinesis Advantage switches) | **No** |
+| Low switch with a + shaped stem (Choc v2, Gateron low profile) | **No** |
 
-Upload [`fab/macbook/flatwell-gerbers.zip`](fab/macbook/flatwell-gerbers.zip).
+You need **64**. If yours aren't Choc v1, add 70 Choc v1 switches to step 1 (any type: Red is
+linear, Brown is tactile).
+
+## Step 1: small parts (order first)
+
+| Qty | Part | Exact item to search for | Notes |
+| --- | --- | --- | --- |
+| 1 | Controller | **nice!nano v2** (nicekeyboards.com; resellers: typeractive.xyz, splitkb.com) | Comes with pin headers. Not the "nice!nano v1", not a clone with a different pinout. |
+| 70 | Hotswap sockets | **Kailh Choc hotswap socket, CPG135001S30** | Need 64. The Choc (low profile) kind, not the MX kind. |
+| 60 | Keycaps, 1u | **MBK Choc keycaps, 1u** (or any Choc v1 keycap for 18 × 17 mm spacing) | 56 normal keys + 4 thumb. 8 of them sit on slightly wider (1.25u) outer-column spots. |
+| 4 | Keycaps, 2u | **MBK Choc keycaps, 2u** | Tall thumb keys (Bksp, Del, Enter, Space), mounted vertically. |
+| 1 | Battery | **3.7 V LiPo, 503450, 1000 mAh, JST-PH 2.0 mm 2-pin plug** | At most 6 mm thick, 40 × 60 mm. **Check polarity** before plugging in (see step 5). |
+| 1 | Battery header | **JST S2B-PH-K-S** (JST-PH 2-pin, right-angle, through-hole) | |
+| 1 | Power switch | **MSK-12C02** SMD slide switch (LCSC C128955) | Buy a few; they're tiny. |
+| 1 | Reset button | **Alps SKQGABE010** SMD tactile switch (or any 5.2 × 5.2 mm 4-pad SMD tact switch) | Optional. |
+| 64 | Diodes | **1N4148W, SOD-123** | Skip if PCBWay assembles them (step 3). |
+| 20 | Threaded inserts | **M3 heat-set insert, brass, 4.6 mm outer diameter, 4–5.7 mm long** | Need 15. |
+| 10 | Screws, long | **M3 × 8 mm button-head (ISO 7380)** | Need 7. |
+| 10 | Screws, short | **M3 × 6 mm button-head (ISO 7380)** | Need 8. |
+| 6 | Feet | Stick-on rubber feet, about 8 mm wide, 2 mm tall | |
+| 1 | Trackpad | **Apple Magic Trackpad**, the 160 × 114.9 mm model (Magic Trackpad 2, 2015 or later; Lightning or USB-C) | Not the 2010 model with AA batteries. |
+
+## Step 2: check the fit on paper (before paying for the board and case)
+
+1. Print [`fab/macbook/flatwell-print.html`](fab/macbook/flatwell-print.html) at 100% scale
+   (turn off "fit to page"). Measure the 50 mm bar on the page.
+2. It shows the **back** of the board. Lay the nice!nano on its outline at the top center, chips
+   facing you, USB port at the board edge. All 24 edge pins must sit on pads.
+3. Put a hotswap socket on any key position. It must cover the two large holes and land on the
+   two square pads. Push a switch's pins through the paper there to confirm.
+4. Print [`preview/print.html`](preview/print.html), tape the halves, set the trackpad on its
+   outline and try the key positions with your hands.
+
+If anything doesn't line up, stop: the board needs a fix first.
+
+## Step 3: the PCB
+
+1. Go to pcbway.com → **PCB Instant Quote** → "Quick-order PCB" / upload Gerber.
+2. Upload [`fab/macbook/flatwell-gerbers.zip`](fab/macbook/flatwell-gerbers.zip).
+3. Set:
 
 | Option | Value |
 | --- | --- |
-| Size | 345 × 118.3 mm (PCBWay reads it from the file) |
+| Board type | Single pieces |
+| Size | about 345 × 120 mm (accept what PCBWay detects from the file) |
+| Quantity | 5 (the minimum; you need 1) |
 | Layers | 2 |
-| Quantity | 5 (the minimum) |
-| Material / thickness | FR-4, 1.6 mm |
-| Min track / spacing | 6/6 mil (the board's narrowest track is 0.15 mm, spacing 0.2 mm) |
-| Min hole | 0.3 mm |
-| Solder mask / silkscreen | any color |
+| Material | FR-4, TG 150–160 |
+| Thickness | 1.6 mm |
+| Min track / spacing | 6/6 mil |
+| Min hole size | 0.3 mm |
+| Solder mask | any color (black looks best through the key gaps) |
+| Silkscreen | white |
 | Surface finish | HASL lead-free |
-| Copper | 1 oz |
-| Everything else | default |
+| Via process | tenting vias |
+| Finished copper | 1 oz |
+| Everything else | leave at default |
 
-**Optional assembly** (saves hand-soldering 64 small diodes): choose "Assembly", bottom side
-only, and upload [`flatwell-bom.csv`](fab/macbook/flatwell-bom.csv) and
-[`flatwell-cpl.csv`](fab/macbook/flatwell-cpl.csv). The only assembled part is D1–D64,
-1N4148W in SOD-123. Ask PCBWay to confirm diode direction against the silkscreen: the thick bar
-marks the cathode. All other parts are hand-soldered.
+4. **Optional: have PCBWay solder the 64 diodes.** Tick "Assembly service" → turnkey,
+   **bottom side only**, 1 unique part, 64 SMD parts per board. Upload
+   [`flatwell-bom.csv`](fab/macbook/flatwell-bom.csv) and
+   [`flatwell-cpl.csv`](fab/macbook/flatwell-cpl.csv). In the notes box write:
+   *"Assemble D1–D64 only (1N4148W, SOD-123, bottom side). Cathode is marked by the thick
+   silkscreen bar. Please confirm diode orientation with me before assembly."*
+   Assemble 2 of the 5 boards to keep the cost down. Otherwise solder the diodes by hand.
 
-## 2. Case (PCBWay, "3D Printing")
+## Step 4: the case
 
-Upload both files, quantity 1 each:
+1. Go to pcbway.com → **CNC | 3D Printing** → 3D Printing → upload both files:
 
-| File | Part | Size |
-| --- | --- | --- |
-| [`flatwell-case-tray.stl`](fab/macbook/flatwell-case-tray.stl) | bottom tray | 354 × 246.7 × 9.6 mm, 218 cm³ |
-| [`flatwell-case-top.stl`](fab/macbook/flatwell-case-top.stl) | top shell | 354 × 246.7 × 4.0 mm, 136 cm³ |
+| File | Part | Size | Qty |
+| --- | --- | --- | --- |
+| [`flatwell-case-tray.stl`](fab/macbook/flatwell-case-tray.stl) | bottom tray | 354 × 246.7 × 9.6 mm | 1 |
+| [`flatwell-case-top.stl`](fab/macbook/flatwell-case-top.stl) | top shell | 354 × 246.7 × 4.0 mm | 1 |
+
+2. Set, for both parts:
 
 | Option | Value |
 | --- | --- |
-| Units | millimetres |
-| Process / material | MJF, PA12 nylon (HP) |
-| Color | black (dyed), or natural gray |
-| Finish | standard (bead blasted) |
-| Threads / inserts | none (inserts are added by hand, below) |
+| Unit | mm |
+| Technology | MJF (Multi Jet Fusion) |
+| Material | PA12 nylon (HP PA12) |
+| Color | black (dyed) |
+| Surface finish | standard (bead/sand blasted), no painting |
+| Threads / inserts | none |
 
-Notes for the printer: the thinnest feature is the 1.2 mm switch plate lip around each 13.8 mm
-key opening; keep those openings to size. Both parts are large and flat, so ask them to orient
-the parts to limit warping, and to say so before printing if they expect more than 1 mm of bow.
+3. In the notes box write: *"Two shells of a keyboard case that screw together. Keep the 64
+   square 13.8 mm openings to size (switches clip into them; the lip is 1.2 mm thick). Both
+   parts are large and flat: please orient to minimise warping and tell me before printing if
+   you expect more than 1 mm of bow."*
 
-## 3. Parts
+## Step 5: assembly, in short
 
-| Qty | Part | Notes |
-| --- | --- | --- |
-| 1 | nice!nano v2 | With its pin headers. Mounts on the back of the PCB, chips facing away from it. |
-| 64 | Kailh Choc v1 switches | Any Choc **v1** type. Not Choc v2, not MX. Buy ~70. |
-| 64 | Kailh Choc hotswap sockets (CPG135001S30) | Buy ~70. |
-| 64 | 1N4148W diodes, SOD-123 | Skip if PCBWay assembles them. |
-| 60 | Choc v1 keycaps, 1u, 18 × 17 mm spacing (e.g. MBK) | 8 of these go on the 1.25u-wide outer columns. |
-| 4 | Choc v1 keycaps, 2u (e.g. MBK 2u) | Thumb keys, mounted vertically. No stabilizers. |
-| 1 | LiPo battery, 3.7 V, JST-PH 2.0 mm plug, at most 6 mm thick | e.g. a 503450 (5 × 34 × 50 mm, ~1000 mAh). **Check polarity** against the nice!nano before plugging in: many batteries are wired the other way round. |
-| 1 | JST-PH 2-pin right-angle header (S2B-PH-K) | Through-hole. |
-| 1 | SMD tactile switch, 6 × 3.7 mm, 2 pads (Alps SKQG type) | Reset button. Optional. |
-| 15 | M3 heat-set inserts, 4.6 mm outer diameter, 4–5.7 mm long | Pressed into the tray posts with a soldering iron. |
-| 7 | M3 × 8 mm button-head screws | Through the top shell and PCB. |
-| 8 | M3 × 6 mm button-head screws | Palm area. |
-| 1 | Apple Magic Trackpad, 160 × 114.9 mm (Magic Trackpad 2 or later, Lightning or USB-C) | Drops into the pocket; it stays its own Bluetooth device. |
-| 4–6 | Stick-on rubber feet, about 2 mm tall | |
+1. Solder on the **back** of the PCB: diodes (bar toward the silkscreen bar), 64 hotswap sockets,
+   power switch, reset button, battery header, then the nice!nano on its headers, chips facing
+   away from the PCB. Keep everything under the board within 6 mm.
+2. **Battery polarity:** with the header soldered, the pin marked + (square pad) must meet the
+   battery's red wire. If the plug is wired the other way, swap the two pins in the plug housing.
+   A reversed battery destroys the nice!nano.
+3. Flash [`firmware/flatwell.uf2`](firmware/flatwell.uf2): plug the nice!nano into the Mac,
+   double-tap reset, drag the file onto the "NICENANO" drive.
+4. Press the 15 inserts into the tray posts with a soldering iron. Lay the PCB on the posts, put
+   the top shell on, push the switches through the top into the sockets, and fit 7 long screws
+   (through the PCB) and 8 short screws (palm area).
+5. Drop the trackpad into its pocket, thick edge toward the keys.
 
-## 4. Firmware
-
-[`firmware/flatwell.uf2`](firmware/flatwell.uf2) is ready to flash (rebuild it with `npm run firmware`). Plug the
-nice!nano in over USB, double-tap reset, and drag the file onto the drive that appears. Keys can
-be remapped afterwards in [ZMK Studio](https://zmk.studio).
+Keys can be remapped any time in [ZMK Studio](https://zmk.studio). Fn (bottom left) + Tab
+unlocks it.
 
 ## Known limits of v1
 
-- No power switch: the keyboard sleeps after 15 minutes idle and wakes on any key. Unplug the
-  battery for long storage.
-- The trackpad's own power switch and charging port are covered while it's in the pocket. Push
-  it out through the hole in the tray to charge it.
+- The power switch is on the back edge, right of the USB port, slightly recessed in a slot: slide
+  it with a fingernail. Toward the USB port is on.
+- The trackpad's own power switch and charging port are covered in the pocket. Push it out
+  through the hole in the tray to charge it.
 - No Touch ID.
-- Keycap tops end up about 20 mm above the desk; the case alone is 13.6 mm.
+- The case alone is 13.6 mm tall; keycap tops end up about 20 mm above the desk.

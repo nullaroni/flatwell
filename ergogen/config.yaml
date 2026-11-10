@@ -57,6 +57,10 @@ units:
   # nice!nano at the back edge between the halves, USB end flush with the edge.
   # Everything but the switches goes on the back of the PCB, so the top stays flat.
   mcu_y: pcb_top - 17.8
+  # Power switch: on a small PCB tab at the back edge, right of the USB port,
+  # so its lever reaches into a slot in the case wall.
+  sw_x: 22
+  sw_tab: 1.8              # how far the tab sticks out past the back edge
 
 points:
   key:
@@ -152,6 +156,12 @@ outlines:
         aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
         shift: [0, (pcb_bot + pcb_low) / 2 - 4ky]
       size: [pcb_mid_w, pcb_bot - pcb_low + 1]
+  _pcb_tab:
+    - what: rectangle
+      where:
+        aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+        shift: [sw_x, pcb_top + sw_tab / 2 - 0.5 - 4ky]
+      size: [12, sw_tab + 1]
   _pcb_thumbs:
     - what: rectangle
       where: /thumb_(bspc|del)_low/
@@ -164,6 +174,8 @@ outlines:
       name: _pcb_band
     - what: outline
       name: _pcb_mid
+    - what: outline
+      name: _pcb_tab
     - what: outline
       name: _pcb_thumbs
 
@@ -223,7 +235,15 @@ pcbs:
         where:
           aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
           shift: [-30, 30 - 4ky]
-        params: {side: B, pos: BAT, neg: GND}
+        params: {side: B, pos: BAT_IN, neg: GND}
+      # Slide switch (MSK-12C02) between the battery and the nice!nano; lever
+      # points out the back. Slid toward the USB port = on.
+      power:
+        what: slider
+        where:
+          aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+          shift: [sw_x, pcb_top + sw_tab - 2.05 - 4ky]
+        params: {side: B, from: BAT_IN, to: BAT}
       reset:
         what: button
         where:

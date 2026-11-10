@@ -8,7 +8,7 @@ fab/<variant>/flatwell-case-{tray,top}.stl and case-report.json.
 
 How it goes together (z = 0 is the desk, all mm):
 
-  tray  floor 0-2, outer wall up to 9.6. Posts hold M3 heat-set inserts. The PCB
+  tray  floor 0-2, outer wall up to 9.6, with slots at the back for USB and the power switch. Posts hold M3 heat-set inserts. The PCB
         sits on posts with its underside at 8.0 (6 mm for sockets and the nice!nano).
         Sloped ribs carry the Magic Trackpad so its top is level.
   PCB   8.0-9.6. Only switches on top.
@@ -60,6 +60,7 @@ SUPPORT_SPACING = 26.0
 POCKET_WALL = 2.5
 RIB_T, RIB_X = 2.4, (12, 32, 52, 72)
 USB_SLOT_W, USB_SLOT_DEPTH = 14.0, 9.0
+SWITCH_SLOT_W, SWITCH_SLOT_Z = 14.0, 5.0   # power switch slot: width, and its lower edge
 
 points = json.loads((OUT / "points.json").read_text())
 cfg = json.loads((OUT / "case.json").read_text())
@@ -89,6 +90,7 @@ pcb = many(
     [
         box(-u["pcb_w"] / 2, u["pcb_bot"], u["pcb_w"] / 2, u["pcb_top"]),
         box(-u["pcb_mid_w"] / 2, u["pcb_low"] - 0.5, u["pcb_mid_w"] / 2, u["pcb_bot"] + 0.5),
+        box(u["sw_x"] - 6, u["pcb_top"] - 1, u["sw_x"] + 6, u["pcb_top"] + u["sw_tab"]),     # power switch tab
     ]
     + [key_rect(k, k["w"] + 2, k["h"] + 2) for k in points if "thumb" in k["name"]]
 )
@@ -120,6 +122,7 @@ under_pcb = many(
     + [affinity.translate(affinity.rotate(circle(dx, 0, d), k["r"], origin=(0, 0)), k["x"], k["y"])
        for k in points for dx, d in ((0, 4.6), (-5.5, 3.0), (5.5, 3.0))]  # switch post and legs
     + [mcu, box(-36.5, 23, -23.5, 37), box(24, 24.5, 36, 35.5)]         # nice!nano, battery plug, reset
+    + [box(u["sw_x"] - 6, u["pcb_top"] - 6, u["sw_x"] + 6, u["pcb_top"] + 3)]  # power switch
     + [circle(x, y, POST_D) for x, y in mounts]
 )
 
@@ -181,6 +184,7 @@ def rib(x):
 usb_slot = box(-USB_SLOT_W / 2, bx["y1"] - USB_SLOT_DEPTH, USB_SLOT_W / 2, bx["y1"] + 1)
 push_hole = circle(tp["cx"], tp["cy"], 20)
 reset_hole = circle(30, 30, 3)
+switch_slot = box(u["sw_x"] - SWITCH_SLOT_W / 2, u["pcb_top"], u["sw_x"] + SWITCH_SLOT_W / 2, bx["y1"] + 1)
 wall = case.difference(inside)
 key_posts = many(circle(x, y, POST_D) for x, y in mounts)
 palm_posts = many(circle(x, y, POST_D) for x, y in palm_screws)
@@ -188,8 +192,9 @@ insert_holes = many(circle(x, y, INSERT_HOLE) for x, y in all_screws)
 
 tray = union(
     slab(case.difference(many([usb_slot, push_hole, reset_hole])), 0, FLOOR)
-    + slab(wall.difference(usb_slot), FLOOR, PCB_BOTTOM)
-    + slab(wall, PCB_BOTTOM, DECK_BOTTOM)
+    + slab(wall.difference(usb_slot), FLOOR, SWITCH_SLOT_Z)
+    + slab(wall.difference(many([usb_slot, switch_slot])), SWITCH_SLOT_Z, PCB_BOTTOM)
+    + slab(wall.difference(switch_slot), PCB_BOTTOM, DECK_BOTTOM)
     + slab(key_posts.difference(insert_holes), FLOOR, PCB_BOTTOM)
     + slab(palm_posts, FLOOR, DECK_BOTTOM - INSERT_DEPTH)
     + slab(palm_posts.difference(insert_holes), DECK_BOTTOM - INSERT_DEPTH, DECK_BOTTOM)
