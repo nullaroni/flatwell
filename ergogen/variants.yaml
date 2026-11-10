@@ -1,0 +1,15 @@
+# Layout variants. Each overrides `units` in config.yaml; `npm run build`
+# renders all of them to output/<variant>/, preview/index.html and preview/print.html.
+#
+# Current design (2026-11-10): `macbook`. Earlier variants (trackpad between the
+# halves, trackpad below full Kinesis thumb clusters, a function row) were too
+# big for the 16-inch-MacBook-Pro size limit; see docs/plan.md.
+
+macbook:
+  title: MacBook style
+  note: >
+    Keys on top and the Magic Trackpad centered below, with Advantage2-style
+    thumb clusters (2u Bksp/Del and Enter/Space) just above it. No function row.
+    Touch ID next to the 6. No bigger than a 16-inch MacBook Pro, so it
+    fits in the same Coach Austin Brief.
+  units: {}

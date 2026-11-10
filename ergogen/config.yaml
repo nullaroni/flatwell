@@ -1,0 +1,251 @@
+# Flatwell: a flat, low-profile, wireless Advantage-style keyboard.
+#
+# Ergogen v4 config. Don't run this file directly: `npm run build` renders every
+# variant in variants.yaml (each one can override any unit below).
+#
+# Matrix: 10 rows x 7 columns, wired straight to a nice!nano (17 edge GPIOs).
+# Each key carries `row_net` (R0-R4 left, R5-R9 right) and `col_net` (C0-C6,
+# shared by both halves); `mirror.row_net` gives the right-hand key's row.
+# Diodes are col2row: column -> switch -> diode anode, cathode -> row.
+
+meta:
+  engine: 4.1.0
+  name: flatwell
+  version: 0.1.0
+
+units:
+  # Key grid: Kailh Choc v1 spacing (18 x 17 mm). Use 19.05 for MX spacing.
+  kx: cx
+  ky: cy
+
+  # Magic Trackpad (USB-C): 160 x 114.9 mm, 4.9-10.9 mm wedge (Apple spec).
+  tp_w: 160
+  tp_d: 114.9
+  tp_clear: 0.6            # pocket clearance per side; tune after a test print
+  rim: 4                   # case wall between pocket and keys
+
+  # Size limit: a 16-in MacBook Pro's footprint (355.7 x 248.1 mm, Apple spec for
+  # 2021 and later), so it travels in the same Coach Austin Brief as the MacBook.
+  # `npm run build` fails if the case outgrows this.
+  bag_w: 355.7
+  bag_h: 248.1
+  wall: 5                  # case beyond the outermost keycap / pocket edge
+
+  # Hand spacing: F-to-J is center_gap + 3 kx. The Advantage2's is 9 in (229 mm),
+  # which needs a 175 mm gap and is too wide. 120 gives 174 mm, the widest that fits.
+  center_gap: 120          # mm between the inner columns' outer edges
+
+  # Thumb clusters, Advantage2 position: start half a key in from the inner
+  # column, top row level with the arrow keys, fanned down toward the middle.
+  thumb_x: 0.5kx
+  thumb_y: -ky
+  thumb_rot: -10
+
+  # Derived
+  half_x: center_gap / 2 + 5.625kx   # board axis -> outer column center
+  # Touch ID: next to the 6 key, toward the middle, level with it (6 = right inner num key)
+  tid_x: center_gap / 2 - kx / 2 - 1.5
+  tid_y: 4ky + 1
+  tp_cx: 0
+  tp_cy: -100              # placeholder; `npm run build` puts it one rim below the lowest key above it
+
+  # Key PCB: one board under every key, num row to thumb clusters.
+  pcb_w: 2 half_x + 1.25kx
+  pcb_top: 4.5ky + 8                 # top of the num row (middle column, +8 stagger)
+  pcb_bot: -ky / 2
+  # Between the halves the PCB reaches down to 2 mm above the trackpad pocket
+  # (inside its 4 mm rim), so traces can get around the thumb clusters.
+  pcb_low: tp_cy + tp_d / 2 + tp_clear + rim - 2
+  pcb_mid_w: center_gap + 2kx
+  # nice!nano at the back edge between the halves, USB end flush with the edge.
+  # Everything but the switches goes on the back of the PCB, so the top stays flat.
+  mcu_y: pcb_top - 17.8
+
+points:
+  key:
+    spread: kx
+    padding: ky
+    width: kx - 1          # keycap footprint, for previews
+    height: ky - 1
+  mirror: 0                # board center line is x = 0
+  zones:
+
+    # Main wells, flattened: 6 columns x 5 rows, bottom row 4 keys.
+    # Columns C0 (outer) .. C5 (inner); rows R0 (num) .. R4 (bottom).
+    matrix:
+      anchor:
+        shift: [-half_x, 0]
+      columns:
+        outer:
+          key: {width: 1.25kx - 1, col_net: C0}
+          rows.bottom.skip: true
+        pinky:
+          key: {spread: 1.125kx, col_net: C1}
+        ring:
+          key: {stagger: 5, col_net: C2}
+        middle:
+          key: {stagger: 3, col_net: C3}
+        index:
+          key: {stagger: -5, col_net: C4}
+        inner:
+          key: {stagger: -2, col_net: C5}
+          rows.bottom.skip: true
+      rows:
+        bottom: {row_net: R4, mirror.row_net: R9}
+        zrow: {row_net: R3, mirror.row_net: R8}
+        home: {row_net: R2, mirror.row_net: R7}
+        top: {row_net: R1, mirror.row_net: R6}
+        num: {row_net: R0, mirror.row_net: R5}
+
+    # Thumb clusters: the Advantage2's, minus Alt, Home, Cmd and PgUp, with
+    # Ctrl moved down into Home's spot so the cluster is two rows tall.
+    #   left:  [Bksp][Del][Ctrl]      right:  [Ctrl][Enter][Space]
+    #          [Bksp][Del][End ]              [PgDn][Enter][Space]
+    # Bksp/Del/Enter/Space are 2u tall. The inner column's empty bottom slot
+    # (C5) and an extra column (C6) carry them in the matrix.
+    thumb:
+      anchor:
+        shift: [-(center_gap / 2 + kx / 2) + thumb_x, thumb_y]
+        rotate: thumb_rot
+      columns:
+        bspc:
+          rows:
+            low: {height: 2ky - 1, adjust.shift: [0, 0.5ky], col_net: C5, row_net: R4, mirror.row_net: R9}
+            high.skip: true
+        del:
+          rows:
+            low: {height: 2ky - 1, adjust.shift: [0, 0.5ky], col_net: C6, row_net: R4, mirror.row_net: R9}
+            high.skip: true
+        nav:
+          rows:
+            low: {col_net: C6, row_net: R2, mirror.row_net: R7}    # End / PgDn
+            high: {col_net: C6, row_net: R3, mirror.row_net: R8}   # Ctrl / Ctrl
+      rows:
+        low:
+        high:
+
+outlines:
+  # Choc v1 plate / case cutouts (13.8 mm nominal)
+  switches:
+    - what: rectangle
+      where: true
+      size: [14, 14]
+
+  # Drop-in pocket for a complete Magic Trackpad
+  trackpad:
+    - what: rectangle
+      where:
+        aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+        shift: [tp_cx, tp_cy - 4ky]
+      size: [tp_w + 2 tp_clear, tp_d + 2 tp_clear]
+      corner: 8
+
+  # Touch ID key from a Magic Keyboard, next to the 6
+  touchid:
+    - what: rectangle
+      where:
+        aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+        shift: [tid_x, tid_y - 4ky]
+      size: [17, 17]
+      corner: 3
+
+  # Key PCB outline: a band under the wells, the area between the halves down to
+  # just above the trackpad, and the thumb clusters, with a hole for Touch ID
+  _pcb_band:
+    - what: rectangle
+      where:
+        aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+        shift: [0, (pcb_top + pcb_bot) / 2 - 4ky]
+      size: [pcb_w, pcb_top - pcb_bot]
+      corner: 1
+  _pcb_mid:
+    - what: rectangle
+      where:
+        aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+        shift: [0, (pcb_bot + pcb_low) / 2 - 4ky]
+      size: [pcb_mid_w, pcb_bot - pcb_low + 1]
+  _pcb_thumbs:
+    - what: rectangle
+      where: /thumb_(bspc|del)_low/
+      size: [kx + 1, 2ky + 1]
+    - what: rectangle
+      where: /thumb_nav/
+      size: [kx + 1, ky + 1]
+  pcb:
+    - what: outline
+      name: _pcb_band
+    - what: outline
+      name: _pcb_mid
+    - what: outline
+      name: _pcb_thumbs
+    - what: rectangle
+      operation: subtract
+      where:
+        aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+        shift: [tid_x, tid_y - 4ky]
+      size: [20, 20]
+      corner: 2
+
+pcbs:
+  flatwell:
+    outlines:
+      edge:
+        outline: pcb
+    footprints:
+      # Kailh Choc v1 with hotswap sockets (soldered switches would save ~1.8 mm)
+      switch:
+        what: choc
+        where: true
+        params:
+          hotswap: true
+          keycaps: true
+          from: "{{col_net}}"
+          to: "{{name}}"
+      # SOD-123 diode on the back, 5 mm below the switch center, clear of its pins
+      diode:
+        what: sod123
+        where: true
+        adjust.shift: [0, -5]
+        params:
+          from: "{{name}}"
+          to: "{{row_net}}"
+      # nice!nano on the back, components facing down, USB toward the back edge.
+      # Firmware pin map: docs/plan.md.
+      mcu:
+        what: nicenano
+        where:
+          aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+          shift: [0, mcu_y - 4ky]
+          rotate: -90
+        params:
+          side: B
+          P0_06: R0
+          P0_08: R1
+          P0_17: R2
+          P0_20: R3
+          P0_22: R4
+          P0_24: C0
+          P1_00: C1
+          P0_11: C2
+          P1_04: C3
+          P1_06: C4
+          P1_11: R5
+          P1_13: R6
+          P1_15: R7
+          P0_02: R8
+          P0_29: R9
+          P0_31: C5
+          P0_10: C6
+      # LiPo connector (wire a panel-mount power switch inline on the + lead)
+      battery:
+        what: jstph
+        where:
+          aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+          shift: [-30, 30 - 4ky]
+        params: {side: B, pos: BAT, neg: GND}
+      reset:
+        what: button
+        where:
+          aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+          shift: [30, 30 - 4ky]
+        params: {side: B, from: RST, to: GND}

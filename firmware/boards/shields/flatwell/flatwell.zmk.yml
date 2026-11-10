@@ -1,0 +1,9 @@
+file_format: "1"
+id: flatwell
+name: Flatwell
+type: shield
+url: https://github.com/nullaroni/flatwell
+requires: [pro_micro]
+features:
+  - keys
+  - studio

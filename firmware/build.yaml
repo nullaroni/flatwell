@@ -1,0 +1,5 @@
+# For ZMK's GitHub Actions build, if this folder is pushed as a zmk-config repo.
+include:
+  - board: nice_nano//zmk
+    shield: flatwell
+    snippet: studio-rpc-usb-uart

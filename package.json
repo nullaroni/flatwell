@@ -1,0 +1,15 @@
+{
+  "name": "flatwell",
+  "version": "0.1.0",
+  "description": "Flat, wireless Advantage-style keyboard with a built-in Magic Trackpad and Touch ID",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "route": "bash scripts/route.sh",
+    "firmware": "node scripts/zmk.mjs && bash scripts/firmware.sh"
+  },
+  "devDependencies": {
+    "ergogen": "^4.2.1",
+    "js-yaml": "^4.3.2"
+  },
+  "private": true
+}

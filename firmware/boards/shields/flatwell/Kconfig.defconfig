@@ -1,0 +1,6 @@
+if SHIELD_FLATWELL
+
+config ZMK_KEYBOARD_NAME
+    default "Flatwell"
+
+endif
