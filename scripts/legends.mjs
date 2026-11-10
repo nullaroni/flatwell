@@ -32,5 +32,3 @@ Object.assign(LEGENDS, {
 
 // Apple spec, Magic Trackpad (USB-C): 160 x 114.9 mm, 4.9-10.9 mm tall
 export const TRACKPAD = { w: 160, d: 114.9 }
-// Pocket for the Magic Keyboard Touch ID key (measure the donor before cutting)
-export const TOUCHID = { w: 17, h: 17 }

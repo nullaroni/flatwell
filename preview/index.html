@@ -3,12 +3,12 @@
 <title>Flatwell layouts</title>
 <style>
   :root { --bg:#f6f5f2; --fg:#1d1d1f; --muted:#6e6e73; --case:#e3e1dc; --cap:#fff; --cap-stroke:#b9b6ae;
-          --tp:#d7dde6; --tp-stroke:#8c97a8; --tid:#2b2b2e; --accent:#0a66d8; }
+          --tp:#d7dde6; --tp-stroke:#8c97a8; --accent:#0a66d8; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
           --bg:#151517; --fg:#ececee; --muted:#9a9aa0; --case:#2a2a2e; --cap:#3a3a3f; --cap-stroke:#55555c;
-          --tp:#33404f; --tp-stroke:#6f8199; --tid:#0e0e10; --accent:#5aa2ff; } }
+          --tp:#33404f; --tp-stroke:#6f8199; --accent:#5aa2ff; } }
   :root[data-theme="dark"] { --bg:#151517; --fg:#ececee; --muted:#9a9aa0; --case:#2a2a2e; --cap:#3a3a3f; --cap-stroke:#55555c;
-          --tp:#33404f; --tp-stroke:#6f8199; --tid:#0e0e10; --accent:#5aa2ff; }
+          --tp:#33404f; --tp-stroke:#6f8199; --accent:#5aa2ff; }
   * { box-sizing:border-box }
   body { margin:0; padding:24px 16px 48px; background:var(--bg); color:var(--fg);
          font:15px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; }
@@ -31,8 +31,6 @@
   .tp-sub { font-size:4px; text-anchor:middle; fill:var(--muted) }
   .palm { fill:none; stroke:var(--muted); stroke-width:.6; stroke-dasharray:2 1.6 }
   .palm-label { font-size:4px; text-anchor:middle; fill:var(--muted) }
-  .tid { fill:var(--tid) } .tid-ring { fill:none; stroke:#8a8a90; stroke-width:.5 }
-  .tid-label { font-size:3.4px; text-anchor:middle; fill:var(--muted) }
   code { font:12px ui-monospace, Menlo, monospace }
 </style></head>
 <body><main>
@@ -42,7 +40,7 @@
   For a 1:1 paper test, print <code>print.html</code>.</p>
   <section>
       <header><h2>MacBook style</h2><span class="dims">354 × 247 mm case · variant <code>macbook</code></span></header>
-      <p>Keys on top and the Magic Trackpad centered below, with Advantage2-style thumb clusters (2u Bksp/Del and Enter/Space) just above it. No function row. Touch ID next to the 6. No bigger than a 16-inch MacBook Pro, so it fits in the same Coach Austin Brief.</p>
+      <p>Keys on top and the Magic Trackpad centered below, with Advantage2-style thumb clusters (2u Bksp/Del and Enter/Space) just above it. No function row. No bigger than a 16-inch MacBook Pro, so it fits in the same Coach Austin Brief.</p>
       <div class="frame"><svg class="board" viewBox="-185.85 -97.7 371.7 264.1" data-w="371.7" data-h="264.1" data-case-w="354" data-case-h="246.71" 
     role="img" aria-label="MacBook style layout, 372 by 264 mm">
     <rect class="case" x="-177" y="-89" width="354" height="246.71" rx="12"/>
@@ -50,9 +48,6 @@
     <rect class="tp" x="-80.6" y="36.61" width="161.2" height="116.1" rx="8"/>
     <text class="tp-label" x="0" y="94.66">Magic Trackpad</text>
     <text class="tp-sub" x="0" y="100.66">160 × 114.9 mm</text>
-    <rect class="tid" x="41" y="-77.5" width="17" height="17" rx="3"/>
-    <circle class="tid-ring" cx="49.5" cy="-69" r="5.5"/>
-    <text class="tid-label" x="49.5" y="-80">Touch ID</text>
     <g transform="translate(-161.25 -17) rotate(0)">
       <rect class="cap" x="-10.75" y="-8" width="21.5" height="16" rx="2"/>
       <text class="legend sm" y="1.1">Shift</text>

@@ -1,8 +1,7 @@
 # Flatwell
 
 A flat, low-profile, wireless keyboard based on the Kinesis Advantage2, laid out like a
-MacBook: keys on top, a built-in Apple Magic Trackpad centered below them, and a Magic
-Keyboard Touch ID button. It's no bigger than a 16-inch MacBook Pro, so it travels in the
+MacBook: keys on top, a built-in Apple Magic Trackpad centered below them. It's no bigger than a 16-inch MacBook Pro, so it travels in the
 same bag.
 
 - **Layout:** the Advantage2's split key layout with column stagger and no concave wells,
@@ -12,8 +11,7 @@ same bag.
   build fails if it grows past that.
 - **Electronics:** our own PCB, a 10 × 7 key matrix wired straight to a nice!nano (17 pins),
   running ZMK.
-- **Apple parts:** a whole Magic Trackpad drops into a pocket. Touch ID is a transplanted
-  Magic Keyboard logic board, which stays its own Bluetooth device (see the plan).
+- **Trackpad:** a whole Magic Trackpad drops into a pocket. (Touch ID is deferred to v2.)
 - **Fab:** PCB from PCBWay (Ergogen generates it, KiCad routes it); the case is 3D printed.
 
 Status: **layout exploration**. See [docs/plan.md](docs/plan.md) for the design, decisions
@@ -49,8 +47,7 @@ The build fails if:
 - a key has no legend or no matrix position, or two keys share a position
 - on the PCB, a key's switch and diode aren't wired to each other, or a row or column
   doesn't reach the nice!nano
-- a keycap overlaps another key, comes within the rim of the trackpad pocket, or crowds the
-  Touch ID cutout
+- a keycap overlaps another key or comes within the rim of the trackpad pocket
 - the case outgrows the size limit (`bag_w` × `bag_h`)
 
 - `ergogen/config.yaml`: the parametric layout ([Ergogen](https://ergogen.xyz) v4)

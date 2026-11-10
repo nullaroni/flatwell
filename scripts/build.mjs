@@ -8,7 +8,7 @@
 // The trackpad goes one rim below the lowest key above it. Each variant is checked:
 // every key has a legend and its own matrix position; on the PCB every key is a
 // switch + diode pair and every row/column reaches the nice!nano; no keycap
-// touches another key, the trackpad pocket rim or Touch ID; and the case stays
+// touches another key or the trackpad pocket rim; and the case stays
 // inside the size limit (bag_w x bag_h, a 16-inch MacBook Pro).
 import { createRequire } from 'node:module'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url'
 const require = createRequire(import.meta.url)
 const ergogen = require('ergogen')
 const yaml = require('js-yaml')
-const { LEGENDS, TRACKPAD, TOUCHID } = await import('./legends.mjs')
+const { LEGENDS, TRACKPAD } = await import('./legends.mjs')
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 for (const fp of ['nicenano', 'sod123']) {
@@ -54,10 +54,9 @@ for (const [id, variant] of Object.entries(variants)) {
     cx: u.tp_cx, cy: u.tp_cy,
     w: u.tp_w + 2 * u.tp_clear, h: u.tp_d + 2 * u.tp_clear,
   }
-  const tid = { cx: u.tid_x, cy: u.tid_y }
 
-  const box = caseBox(keys, tp, tid, u.wall)
-  const problems = [...checkMatrix(keys), ...checkPcb(pcb, keys), ...checkClearance(keys, tp, tid, u.rim)]
+  const box = caseBox(keys, tp, u.wall)
+  const problems = [...checkMatrix(keys), ...checkPcb(pcb, keys), ...checkClearance(keys, tp, u.rim)]
   if (box.w > u.bag_w || box.h > u.bag_h) {
     problems.push(`case is ${f(box.w)} × ${f(box.h)} mm; the size limit is ${u.bag_w} × ${u.bag_h} mm`)
   }
@@ -73,7 +72,7 @@ for (const [id, variant] of Object.entries(variants)) {
   // Rough resting spot of the palm heel: ~92 mm below the middle finger on home row
   const mid = res.points.matrix_middle_home
   const palms = [-1, 1].map(s => ({ cx: s * (Math.abs(mid.x) - 8), cy: mid.y - 92 }))
-  rendered.push({ id, ...variant, keys, tp, tid, palms, box, u })
+  rendered.push({ id, ...variant, keys, tp, palms, box, u })
 }
 
 writeFileSync(join(root, 'preview/index.html'), page(rendered))
@@ -137,18 +136,14 @@ function checkPcb(text, keys) {
   return problems
 }
 
-// Keycaps must not touch each other, the trackpad pocket plus its rim, or the
-// Touch ID cutout plus 2 mm.
-function checkClearance(keys, tp, tid, rim) {
+// Keycaps must not touch each other or the trackpad pocket plus its rim.
+function checkClearance(keys, tp, rim) {
   const problems = []
   const caps = keys.map(k => [k, corners(k)])
   const pocket = rect(tp.cx, tp.cy, tp.w + 2 * rim, tp.h + 2 * rim)
-  const touchid = rect(tid.cx, tid.cy, TOUCHID.w + 4, TOUCHID.h + 4)
-  if (overlaps(rect(tid.cx, tid.cy, TOUCHID.w, TOUCHID.h), pocket)) problems.push(`Touch ID is within ${rim} mm of the trackpad pocket`)
   for (let i = 0; i < caps.length; i++) {
     const [k, a] = caps[i]
     if (overlaps(a, pocket)) problems.push(`${label(k)} is within ${rim} mm of the trackpad pocket`)
-    if (overlaps(a, touchid)) problems.push(`${label(k)} is within 2 mm of Touch ID`)
     for (let j = i + 1; j < caps.length; j++) {
       if (overlaps(a, caps[j][1])) problems.push(`${label(k)} overlaps ${label(caps[j][0])}`)
     }
@@ -179,12 +174,11 @@ function corners(k) {
   })
 }
 
-// Case outline: a rounded rectangle around every keycap, the trackpad pocket
-// and Touch ID, plus `wall` on each side.
-function caseBox(keys, tp, tid, wall) {
+// Case outline: a rounded rectangle around every keycap and the trackpad
+// pocket, plus `wall` on each side.
+function caseBox(keys, tp, wall) {
   const pts = keys.flatMap(corners)
     .concat(rect(tp.cx, tp.cy, tp.w, tp.h))
-    .concat(rect(tid.cx, tid.cy, TOUCHID.w, TOUCHID.h))
   const xs = pts.map(p => p[0]), ys = pts.map(p => p[1])
   const x0 = Math.min(...xs) - wall, x1 = Math.max(...xs) + wall
   const y0 = Math.min(...ys) - wall, y1 = Math.max(...ys) + wall
@@ -234,9 +228,6 @@ function svg(v, opts = {}) {
     <rect class="tp" x="${f(v.tp.cx - v.tp.w / 2)}" y="${f(-(v.tp.cy + v.tp.h / 2))}" width="${f(v.tp.w)}" height="${f(v.tp.h)}" rx="8"/>
     <text class="tp-label" x="${f(v.tp.cx)}" y="${f(-v.tp.cy)}">Magic Trackpad</text>
     <text class="tp-sub" x="${f(v.tp.cx)}" y="${f(-v.tp.cy + 6)}">${TRACKPAD.w} × ${TRACKPAD.d} mm</text>
-    <rect class="tid" x="${f(v.tid.cx - TOUCHID.w / 2)}" y="${f(-(v.tid.cy + TOUCHID.h / 2))}" width="${TOUCHID.w}" height="${TOUCHID.h}" rx="3"/>
-    <circle class="tid-ring" cx="${f(v.tid.cx)}" cy="${f(-v.tid.cy)}" r="5.5"/>
-    <text class="tid-label" x="${f(v.tid.cx)}" y="${f(-v.tid.cy - TOUCHID.h / 2 - 2.5)}">Touch ID</text>
     ${keySvg}
     ${showPalms ? v.palms.map(p => `<ellipse class="palm" cx="${f(p.cx)}" cy="${f(-p.cy)}" rx="38" ry="24"/>
     <text class="palm-label" x="${f(p.cx)}" y="${f(-p.cy + 1.4)}">palm (approx.)</text>`).join('') : ''}
@@ -274,8 +265,6 @@ function printPage(vs) {
   .legend { font-size:4.2px; text-anchor:middle; fill:#111 } .legend.sm { font-size:3px }
   .tp { fill:#eef2f7; stroke:#333; stroke-width:.4; stroke-dasharray:3 2 }
   .tp-label { font-size:6px; text-anchor:middle; fill:#111 } .tp-sub { font-size:4px; text-anchor:middle; fill:#555 }
-  .tid { fill:none; stroke:#111; stroke-width:.4 } .tid-ring { fill:none; stroke:#111; stroke-width:.3 }
-  .tid-label { font-size:3.4px; text-anchor:middle; fill:#555 }
   .center { stroke:#c00; stroke-width:.3; stroke-dasharray:2 1.5 } .center-label { font-size:3.2px; fill:#c00 }
   .scale line { stroke:#111; stroke-width:.3 } .scale text { font-size:3px; text-anchor:middle; fill:#111 }
   @media screen { body { padding:16px } .sheet { margin-bottom:24px } }
@@ -305,12 +294,12 @@ function page(vs) {
 <title>Flatwell layouts</title>
 <style>
   :root { --bg:#f6f5f2; --fg:#1d1d1f; --muted:#6e6e73; --case:#e3e1dc; --cap:#fff; --cap-stroke:#b9b6ae;
-          --tp:#d7dde6; --tp-stroke:#8c97a8; --tid:#2b2b2e; --accent:#0a66d8; }
+          --tp:#d7dde6; --tp-stroke:#8c97a8; --accent:#0a66d8; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
           --bg:#151517; --fg:#ececee; --muted:#9a9aa0; --case:#2a2a2e; --cap:#3a3a3f; --cap-stroke:#55555c;
-          --tp:#33404f; --tp-stroke:#6f8199; --tid:#0e0e10; --accent:#5aa2ff; } }
+          --tp:#33404f; --tp-stroke:#6f8199; --accent:#5aa2ff; } }
   :root[data-theme="dark"] { --bg:#151517; --fg:#ececee; --muted:#9a9aa0; --case:#2a2a2e; --cap:#3a3a3f; --cap-stroke:#55555c;
-          --tp:#33404f; --tp-stroke:#6f8199; --tid:#0e0e10; --accent:#5aa2ff; }
+          --tp:#33404f; --tp-stroke:#6f8199; --accent:#5aa2ff; }
   * { box-sizing:border-box }
   body { margin:0; padding:24px 16px 48px; background:var(--bg); color:var(--fg);
          font:15px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; }
@@ -333,8 +322,6 @@ function page(vs) {
   .tp-sub { font-size:4px; text-anchor:middle; fill:var(--muted) }
   .palm { fill:none; stroke:var(--muted); stroke-width:.6; stroke-dasharray:2 1.6 }
   .palm-label { font-size:4px; text-anchor:middle; fill:var(--muted) }
-  .tid { fill:var(--tid) } .tid-ring { fill:none; stroke:#8a8a90; stroke-width:.5 }
-  .tid-label { font-size:3.4px; text-anchor:middle; fill:var(--muted) }
   code { font:12px ui-monospace, Menlo, monospace }
 </style></head>
 <body><main>

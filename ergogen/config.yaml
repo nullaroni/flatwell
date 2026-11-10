@@ -43,9 +43,6 @@ units:
 
   # Derived
   half_x: center_gap / 2 + 5.625kx   # board axis -> outer column center
-  # Touch ID: next to the 6 key, toward the middle, level with it (6 = right inner num key)
-  tid_x: center_gap / 2 - kx / 2 - 1.5
-  tid_y: 4ky + 1
   tp_cx: 0
   tp_cy: -100              # placeholder; `npm run build` puts it one rim below the lowest key above it
 
@@ -140,17 +137,8 @@ outlines:
       size: [tp_w + 2 tp_clear, tp_d + 2 tp_clear]
       corner: 8
 
-  # Touch ID key from a Magic Keyboard, next to the 6
-  touchid:
-    - what: rectangle
-      where:
-        aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
-        shift: [tid_x, tid_y - 4ky]
-      size: [17, 17]
-      corner: 3
-
   # Key PCB outline: a band under the wells, the area between the halves down to
-  # just above the trackpad, and the thumb clusters, with a hole for Touch ID
+  # just above the trackpad, and the thumb clusters
   _pcb_band:
     - what: rectangle
       where:
@@ -178,13 +166,6 @@ outlines:
       name: _pcb_mid
     - what: outline
       name: _pcb_thumbs
-    - what: rectangle
-      operation: subtract
-      where:
-        aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
-        shift: [tid_x, tid_y - 4ky]
-      size: [20, 20]
-      corner: 2
 
 pcbs:
   flatwell:

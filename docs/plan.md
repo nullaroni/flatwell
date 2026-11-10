@@ -7,7 +7,7 @@ Last updated 2026-11-10.
 1. Advantage2-style split key layout and thumb clusters, so most of the muscle memory carries over.
 2. Wireless (Bluetooth), ZMK firmware.
 3. Much thinner than the Advantage2's ~73 mm. No concave wells: flat PCB, low-profile switches.
-4. Built-in Magic Trackpad and Touch ID, laid out like a MacBook.
+4. Built-in Magic Trackpad, laid out like a MacBook. (Touch ID is deferred to v2.)
 5. **No bigger than a 16-inch MacBook Pro**, so it travels in the same Coach Austin Brief.
 6. Buildable: our own PCB from PCBWay, 3D-printed case.
 
@@ -42,8 +42,6 @@ Thickness: the bag is 57 mm deep and the MacBook takes 16.8 mm. Aim for ≤ 25 m
   PgUp.
 - **Trackpad:** centered below the thumb clusters. `npm run build` places it one 4 mm rim
   below the lowest key above it. Palm rests on either side, like a MacBook.
-- **Touch ID:** next to the 6 key, toward the middle, like the Touch ID key at the top right of a
-  Magic Keyboard. Pressing it locks the Mac.
 
 ### Layouts that didn't make it
 
@@ -56,8 +54,7 @@ Thickness: the bag is 57 mm deep and the MacBook takes 16.8 mm. Aim for ≤ 25 m
 Our own key PCB, wired straight to a nice!nano. No shift register.
 
 - **One PCB**, 345 × 118 mm: a band under both halves, filled in between them down to 2 mm
-  above the trackpad pocket (room for traces around the thumb clusters), with a hole for the
-  Touch ID module. Ergogen generates it with parts placed and nets assigned; `npm run route`
+  above the trackpad pocket (room for traces around the thumb clusters). Ergogen generates it with parts placed and nets assigned; `npm run route`
   routes it.
 - **Matrix:** 10 rows × 7 columns, 17 GPIOs. Rows R0–R4 are the left half (num row to bottom
   row), R5–R9 the right. Columns C0 (outer) to C5 (inner) are shared by both halves; C6 is an
@@ -114,7 +111,10 @@ own PCB, a direct matrix is simpler and needs no shift register, so we dropped c
   as on a MacBook. macOS ignores resting palms on MacBook trackpads; test whether the Magic
   Trackpad does too with the paper mockup and a real trackpad.
 
-## Touch ID
+## Touch ID (deferred to v2)
+
+Not in v1 (decided 2026-11-10): no opening in the case and no hole in the PCB. The notes
+below are kept for v2, which would need a new case and a PCB with the hole back.
 
 The Touch ID sensor is cryptographically paired to the Magic Keyboard's own logic board, so
 it can't be wired to the nice!nano. The known approach (Khaos Tian, 2022; Snazzy Labs builds) is
@@ -125,13 +125,25 @@ keyboard. It stays a separate Bluetooth keyboard that only has a Touch ID key.
 - The teardown is destructive and fiddly. Buy a used or broken donor; keyboard damage is fine as
   long as the logic board and sensor survive.
 - Teardown guides cover the Lightning model. Check before buying a USB-C (2024) donor.
-- Logic board size is **TBD** until we have a donor to measure. It should fit under a palm rest.
+- **Sizes**, measured 2026-11-10 from Snazzy Labs' public-domain "Wireless TKL" enclosure
+  (printables.com/model/320000), which holds the same parts from a no-numpad Magic Keyboard:
+  - Bay for logic board + battery + button: **138 × 31 mm, about 5.2 mm deep**
+    (the whole enclosure is 144 × 37 × 15.8 mm).
+  - Button opening: **14.5 mm square** through a 3 mm top plate, narrowing to 10.5 mm at the
+    surface. The button sits over the middle of the board (69.8 mm from one end).
+  - Two 3 mm screw bosses, 50 mm apart, 4.7 mm off the button's center line.
+- That enclosure was drawn for the Lightning keyboard. MakerWorld model 1128620 says the USB-C
+  keyboard also works but ships a separate body for it, so its port area differs. Those files
+  need a MakerWorld login; verify against a real donor before ordering the case.
+- **Placement (v2):** the button stays directly over its board, so the 138 × 31 mm bay runs
+  left-right under the right half's number row, in a layer **below the key PCB**. That adds
+  about 6 mm under that part of the board. The numpad keyboard's longer board won't fit.
 
 ## Power and charging
 
-There are three batteries: the nice!nano's LiPo, the trackpad's and the Magic Keyboard board's.
-Option: one USB-C port on the case feeding a small internal USB 2.0 hub, with the nice!nano,
-trackpad and Touch ID board downstream. Plugging in one cable then charges all three (and makes
+There are two batteries: the nice!nano's LiPo and the trackpad's.
+Option: one USB-C port on the case feeding a small internal USB 2.0 hub, with the nice!nano and
+trackpad downstream. Plugging in one cable then charges both (and makes
 them wired).
 
 ## Case and printing
@@ -139,7 +151,7 @@ them wired).
 - **PCBWay prints the case** (decided 2026-11-10), so it can be one piece per shell with no
   split lines. MJF nylon (PA12) is the default pick: strong, slightly flexible, matte.
 - Rounded corners (12 mm radius), like the MacBook, so it slides into the bag.
-- Openings: nice!nano USB-C at the back center, power switch, Touch ID, trackpad pocket.
+- Openings: nice!nano USB-C at the back center, power switch, trackpad pocket.
 - Tenting: not planned. It has to lie flat in the bag.
 
 ## Fab: PCBWay
@@ -199,22 +211,19 @@ Studio support also means the board could be added to Remap360's browser editor 
 | Thumb keys | Bksp, Del, Ctrl, End / PgDn, Ctrl, Enter, Space | User doesn't use Alt/Home/Cmd/PgUp much |
 | Case | 3D printed by PCBWay, unsplit | No printer big enough at home |
 | Trackpad | Whole unit, drop-in | No teardown, keeps Force Touch + battery |
-| Touch ID | Transplanted Magic Keyboard board | Sensor is paired to its board |
+| Touch ID | Not in v1 | Simpler, thinner case; revisit for v2 |
 
 ## Open questions
 
-1. Donor Magic Keyboard: Lightning or USB-C model?
-2. Internal USB hub for one-port charging: worth the extra board?
+1. Internal USB hub for one-port charging: worth the extra board?
 
 ## Next steps
 
 1. Print `preview/print.html`, tape it up, put a real Magic Trackpad on it, and type on it.
 2. Print `fab/macbook/flatwell-print.html` (the PCB's back at 1:1) and check a real nice!nano,
    a Choc switch and a hotswap socket against it. Then order from PCBWay.
-3. Decide where Cmd and Option live on the base layer.
-4. Case CAD from the Ergogen outlines (build123d or OpenSCAD): trackpad pocket depth, battery and
-   logic-board bays under the palm rests, split line for printing.
-5. Order a donor Magic Keyboard with Touch ID and measure its logic board.
+3. Case CAD from the Ergogen outlines (build123d or OpenSCAD): two shells for PCBWay, trackpad
+   pocket depth, battery bay under a palm rest.
 
 ## References
 
@@ -225,6 +234,8 @@ Studio support also means the board could be added to Remap360's browser editor 
 - Magic Trackpad specs: https://support.apple.com/en-bh/121932
 - 16-inch MacBook Pro specs: https://support.apple.com/111901
 - Coach Austin Brief: https://www.coach.com/products/austin-brief/CFG68.html
+- Snazzy Labs standalone Touch ID enclosure (bay sizes): https://www.printables.com/model/320000-standalone-touch-id-module-for-mac
+- Hidden Touch ID for Magic Trackpad (Lightning + USB-C notes): https://makerworld.com/models/1128620
 - Standalone Touch ID teardown (Khaos Tian): https://gist.github.com/KhaosT/1406a6b6bea38f59e059c2afcb39d545
 - Standalone Touch ID writeups: https://hackaday.com/2022/12/26/standalone-touch-id-for-your-desktop-mac/ ,
   https://www.jeffgeerling.com/blog/2025/why-doesnt-apple-make-standalone-touch-id/
