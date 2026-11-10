@@ -80,7 +80,7 @@ the parts to limit warping, and to say so before printing if they expect more th
 
 ## 4. Firmware
 
-`firmware/flatwell.uf2` is built with `npm run firmware` (see the [README](README.md)). Plug the
+[`firmware/flatwell.uf2`](firmware/flatwell.uf2) is ready to flash (rebuild it with `npm run firmware`). Plug the
 nice!nano in over USB, double-tap reset, and drag the file onto the drive that appears. Keys can
 be remapped afterwards in [ZMK Studio](https://zmk.studio).
 
