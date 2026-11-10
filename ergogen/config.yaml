@@ -217,7 +217,7 @@ pcbs:
           P0_29: R9
           P0_31: C5
           P0_10: C6
-      # LiPo connector (wire a panel-mount power switch inline on the + lead)
+      # LiPo connector
       battery:
         what: jstph
         where:
@@ -230,3 +230,41 @@ pcbs:
           aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
           shift: [30, 30 - 4ky]
         params: {side: B, from: RST, to: GND}
+      # Case screws: M3 from the top shell through the PCB into the tray's posts.
+      # Spots with no key: the empty outer bottom-row slots, the strip above the
+      # outer columns, and between the halves. scripts/case.py reads these back.
+      mount_lo_l:
+        what: mounthole
+        where:
+          aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+          shift: [-161.25, 0 - 4ky]
+      mount_lo_r:
+        what: mounthole
+        where:
+          aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+          shift: [161.25, 0 - 4ky]
+      mount_hi_l:
+        what: mounthole
+        where:
+          aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+          shift: [-160, 81 - 4ky]
+      mount_hi_r:
+        what: mounthole
+        where:
+          aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+          shift: [160, 81 - 4ky]
+      mount_mid_l:
+        what: mounthole
+        where:
+          aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+          shift: [-40, 72 - 4ky]
+      mount_mid_r:
+        what: mounthole
+        where:
+          aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+          shift: [40, 72 - 4ky]
+      mount_mid:
+        what: mounthole
+        where:
+          aggregate.parts: [matrix_outer_num, mirror_matrix_outer_num]
+          shift: [0, 22 - 4ky]

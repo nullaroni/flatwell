@@ -2,5 +2,5 @@ node_modules/
 output/
 .DS_Store
 tools/
-fab/
+fab/*/gerbers/
 *.uf2

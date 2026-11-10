@@ -4,6 +4,7 @@
 #   output/<variant>/flatwell-routed.kicad_pcb  routed board (open in KiCad)
 #   output/<variant>/drc.json                   KiCad design-rule check report
 #   fab/<variant>/flatwell-gerbers.zip          upload this to PCBWay
+#   fab/<variant>/flatwell.kicad_pcb            copy of the routed board
 #   fab/<variant>/flatwell-bom.csv              parts list for PCBWay assembly (diodes)
 #   fab/<variant>/flatwell-cpl.csv              where those parts go (bottom side)
 #   fab/<variant>/flatwell-{top,bottom}.svg     pictures of the board
@@ -82,6 +83,8 @@ PY
   --mode-single --page-size-mode 2 --exclude-drawing-sheet --mirror "$ROUTED" > /dev/null
 
 "$KPY" "$ROOT/scripts/pcb_print.py" "$FAB/flatwell-bottom.svg" "$FAB/flatwell-print.html"
+
+cp "$ROUTED" "$FAB/flatwell.kicad_pcb"
 
 echo "✓ routed board: $ROUTED"
 echo "✓ PCBWay files: $FAB/flatwell-gerbers.zip (+ flatwell-bom.csv, flatwell-cpl.csv for assembly)"

@@ -1,0 +1,23 @@
+{
+  "size_mm": {
+    "width": 354.0,
+    "depth": 246.71,
+    "height_without_keys": 13.6,
+    "keycap_top_approx": 20.1
+  },
+  "tray": {
+    "volume_cm3": 217.7,
+    "watertight": true
+  },
+  "top": {
+    "volume_cm3": 135.7,
+    "watertight": true
+  },
+  "screws": {
+    "through_pcb_M3x8": 7,
+    "palm_M3x6": 8,
+    "inserts_M3": 15
+  },
+  "pcb_support_posts": 30,
+  "problems": []
+}

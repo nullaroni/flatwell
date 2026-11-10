@@ -5,7 +5,8 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "route": "bash scripts/route.sh",
-    "firmware": "node scripts/zmk.mjs && bash scripts/firmware.sh"
+    "firmware": "node scripts/zmk.mjs && bash scripts/firmware.sh",
+    "case": "uv run -q --isolated --no-project --python 3.12 --with trimesh --with shapely --with manifold3d --with mapbox-earcut --with numpy python scripts/case.py"
   },
   "devDependencies": {
     "ergogen": "^4.2.1",

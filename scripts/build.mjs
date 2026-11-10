@@ -2,6 +2,7 @@
 // Builds every layout variant in ergogen/variants.yaml:
 //   output/<variant>/outlines/*.{dxf,svg}  fab outlines from Ergogen
 //   output/<variant>/points.json           key positions + matrix nets
+//   output/<variant>/case.json             case outline, trackpad pocket and units, for scripts/case.py
 //   output/<variant>/flatwell.kicad_pcb    unrouted key PCB (open in KiCad to route)
 //   preview/index.html                     labeled previews of all variants
 //   preview/print.html                     1:1 print sheets, one half per Letter page (portrait)
@@ -21,7 +22,7 @@ const yaml = require('js-yaml')
 const { LEGENDS, TRACKPAD } = await import('./legends.mjs')
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
-for (const fp of ['nicenano', 'sod123']) {
+for (const fp of ['nicenano', 'sod123', 'mounthole']) {
   ergogen.inject('footprint', fp, require(join(root, `ergogen/footprints/${fp}.js`)))
 }
 const base = yaml.load(readFileSync(join(root, 'ergogen/config.yaml'), 'utf8'))
@@ -56,6 +57,8 @@ for (const [id, variant] of Object.entries(variants)) {
   }
 
   const box = caseBox(keys, tp, u.wall)
+  // Everything scripts/case.py needs besides the key positions
+  writeFileSync(join(outDir, 'case.json'), JSON.stringify({ box, tp, units: u }, null, 2))
   const problems = [...checkMatrix(keys), ...checkPcb(pcb, keys), ...checkClearance(keys, tp, u.rim)]
   if (box.w > u.bag_w || box.h > u.bag_h) {
     problems.push(`case is ${f(box.w)} × ${f(box.h)} mm; the size limit is ${u.bag_w} × ${u.bag_h} mm`)

@@ -14,8 +14,9 @@ same bag.
 - **Trackpad:** a whole Magic Trackpad drops into a pocket. (Touch ID is deferred to v2.)
 - **Fab:** PCB from PCBWay (Ergogen generates it, KiCad routes it); the case is 3D printed.
 
-Status: **layout exploration**. See [docs/plan.md](docs/plan.md) for the design, decisions
-and open questions.
+Status: **untested v1 prototype**. The board is routed, the firmware builds and the case is
+modelled, but nothing has been made yet. What to order is in [ORDER.md](ORDER.md); the design,
+decisions and open questions are in [docs/plan.md](docs/plan.md).
 
 ## Build
 
@@ -38,6 +39,12 @@ Then the firmware (needs `brew install cmake ninja dtc uv`; first run downloads 
 npm run firmware  # → firmware/flatwell.uf2 (ZMK, with ZMK Studio)
 ```
 
+And the case shells (needs `uv`):
+
+```sh
+npm run case      # → fab/macbook/flatwell-case-{tray,top}.stl
+```
+
 `preview/print.html` prints each half on a Letter page (portrait) at 1:1. Tape the halves
 together at the red center line, set a real Magic Trackpad on the outline, and try your
 hands on it.
@@ -56,5 +63,6 @@ The build fails if:
 - `scripts/build.mjs`: runs Ergogen per variant, places the trackpad, runs the checks,
   renders the previews
 - `scripts/legends.mjs`: key legends by key name
+- `scripts/case.py`: builds the two case shells from the layout
 - `scripts/zmk.mjs`, `scripts/firmware.sh`: generate the ZMK shield in `firmware/` and build it
 - `scripts/route.sh`, `scripts/pcb_print.py`, `scripts/kicad_route.py`: autoroute with Freerouting, DRC and fab files via KiCad
