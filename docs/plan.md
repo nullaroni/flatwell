@@ -167,6 +167,18 @@ them wired).
 - Unproven: MJF flatness over 354 mm, the plate lip's strength, and whether 6 mm under the PCB
   clears a nice!nano on standard headers (about 5.5 mm).
 - Tenting: not planned. It has to lie flat in the bag.
+- **Home-printed prototype** (added 2026-11-11): `npm run case:bambu` cuts the same case into
+  four pieces for a 256 mm plate (Bambu Lab X1 / P1 / A1), into `fab/macbook/bambu/`.
+  - The tray is cut at x = -22 mm and the top at x = 0, so each shell bridges the other's seam.
+    The top-left half screws into both tray halves (middle screw), and the PCB screws into both.
+  - Along each seam the halves hold each other level with tongues: a tongue lies on the print
+    bed and slides sideways under a roof printed on the other half (0.4 mm gap above, 0.2 mm
+    beside). 9 on the tray (5 under the trackpad, 4 under the PCB), 7 on the top.
+  - Differences from the PCBWay shells: solid palm rests (the slicer's infill replaces the
+    hollow), 13.9 mm switch openings, pads under the tray roofs. Nothing needs support.
+  - Unproven: the seams have never been printed. The tongues don't stop the tray halves from
+    pulling apart sideways; the PCB and screws do that, and superglue on the tongues makes it
+    rigid.
 
 ## Fab: PCBWay
 
@@ -223,7 +235,7 @@ Studio support also means the board could be added to Remap360's browser editor 
 | F row | None; F keys on a layer | Room for the thumb clusters |
 | Esc | Caps Lock's spot; no Caps Lock | User's pick |
 | Thumb keys | Bksp, Del, Ctrl, End / PgDn, Ctrl, Enter, Space | User doesn't use Alt/Home/Cmd/PgUp much |
-| Case | 3D printed by PCBWay, unsplit | No printer big enough at home |
+| Case | 3D printed by PCBWay, unsplit; or four pieces on a Bambu Lab printer | PCBWay for the real one, home printing to prototype |
 | Trackpad | Whole unit, drop-in | No teardown, keeps Force Touch + battery |
 | Touch ID | Not in v1 | Simpler, thinner case; revisit for v2 |
 

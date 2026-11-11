@@ -6,7 +6,8 @@
     "build": "node scripts/build.mjs",
     "route": "bash scripts/route.sh",
     "firmware": "node scripts/zmk.mjs && bash scripts/firmware.sh",
-    "case": "uv run -q --isolated --no-project --python 3.12 --with trimesh --with shapely --with manifold3d --with mapbox-earcut --with numpy python scripts/case.py"
+    "case": "uv run -q --isolated --no-project --python 3.12 --with trimesh --with shapely --with manifold3d --with numpy python scripts/case.py",
+    "case:bambu": "npm run -s case -- macbook --bambu"
   },
   "devDependencies": {
     "ergogen": "^4.2.1",

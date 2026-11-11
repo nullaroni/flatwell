@@ -12,7 +12,8 @@ same bag.
 - **Electronics:** our own PCB, a 10 × 7 key matrix wired straight to a nice!nano (17 pins),
   running ZMK.
 - **Trackpad:** a whole Magic Trackpad drops into a pocket. (Touch ID is deferred to v2.)
-- **Fab:** PCB from PCBWay (Ergogen generates it, KiCad routes it); the case is 3D printed.
+- **Fab:** PCB from PCBWay (Ergogen generates it, KiCad routes it); the case is 3D printed,
+  either by PCBWay in one piece per shell or at home in four pieces on a Bambu Lab printer.
 
 Status: **untested v1 prototype**. The board is routed, the firmware builds and the case is
 modelled, but nothing has been made yet. What to order is in [ORDER.md](ORDER.md); the design,
@@ -42,7 +43,8 @@ npm run firmware  # → firmware/flatwell.uf2 (ZMK, with ZMK Studio)
 And the case shells (needs `uv`):
 
 ```sh
-npm run case      # → fab/macbook/flatwell-case-{tray,top}.stl
+npm run case        # → fab/macbook/flatwell-case-{tray,top}.stl       (PCBWay, one piece per shell)
+npm run case:bambu  # → fab/macbook/bambu/flatwell-bambu-*.stl         (four pieces for a 256 mm plate)
 ```
 
 `preview/print.html` prints each half on a Letter page (portrait) at 1:1. Tape the halves
@@ -63,6 +65,7 @@ The build fails if:
 - `scripts/build.mjs`: runs Ergogen per variant, places the trackpad, runs the checks,
   renders the previews
 - `scripts/legends.mjs`: key legends by key name
-- `scripts/case.py`: builds the two case shells from the layout
+- `scripts/case.py`: builds the two case shells from the layout; with `--bambu` it cuts them
+  into four pieces that fit a 256 mm printer plate
 - `scripts/zmk.mjs`, `scripts/firmware.sh`: generate the ZMK shield in `firmware/` and build it
 - `scripts/route.sh`, `scripts/pcb_print.py`, `scripts/kicad_route.py`: autoroute with Freerouting, DRC and fab files via KiCad

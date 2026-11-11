@@ -37,6 +37,7 @@ linear, Brown is tactile).
 | 10 | Screws, long | **M3 × 8 mm button-head (ISO 7380)** | Need 7. |
 | 10 | Screws, short | **M3 × 6 mm button-head (ISO 7380)** | Need 8. |
 | 6 | Feet | Stick-on rubber feet, about 8 mm wide, 2 mm tall | |
+| 1 | Superglue | Any thin cyanoacrylate | Only if you print the case yourself (step 4, option B). |
 | 1 | Trackpad | **Apple Magic Trackpad**, the 160 × 114.9 mm model (Magic Trackpad 2, 2015 or later; Lightning or USB-C) | Not the 2010 model with AA batteries. |
 
 ## Step 2: check the fit on paper (before paying for the board and case)
@@ -85,6 +86,10 @@ If anything doesn't line up, stop: the board needs a fix first.
 
 ## Step 4: the case
 
+Two ways to get the same case. Both use the same screws, inserts and PCB.
+
+### Option A: PCBWay prints it in nylon, one piece per shell
+
 1. Go to pcbway.com → **CNC | 3D Printing** → 3D Printing → upload both files:
 
 | File | Part | Size | Qty |
@@ -108,6 +113,52 @@ If anything doesn't line up, stop: the board needs a fix first.
    parts are large and flat: please orient to minimise warping and tell me before printing if
    you expect more than 1 mm of bow."*
 
+### Option B: print it yourself on a Bambu Lab printer
+
+The case is 354 mm wide and the plate is 256 mm, so each shell is cut in two: four prints, one
+per plate. The files are in [`fab/macbook/bambu/`](fab/macbook/bambu/). Like the rest of v1,
+nobody has printed these yet.
+
+![The four pieces, each on a 256 mm plate](fab/macbook/bambu/flatwell-bambu-plates.svg)
+
+| File | Part | Size |
+| --- | --- | --- |
+| [`flatwell-bambu-tray-left.stl`](fab/macbook/bambu/flatwell-bambu-tray-left.stl) | bottom tray, left | 161 × 246.7 × 9.6 mm |
+| [`flatwell-bambu-tray-right.stl`](fab/macbook/bambu/flatwell-bambu-tray-right.stl) | bottom tray, right | 205 × 246.7 × 9.6 mm |
+| [`flatwell-bambu-top-left.stl`](fab/macbook/bambu/flatwell-bambu-top-left.stl) | top shell, left | 183 × 246.7 × 4.0 mm |
+| [`flatwell-bambu-top-right.stl`](fab/macbook/bambu/flatwell-bambu-top-right.stl) | top shell, right | 182 × 246.7 × 4.0 mm |
+
+All four in one download:
+[`flatwell-bambu-case.zip`](https://github.com/nullaroni/flatwell/raw/main/fab/macbook/bambu/flatwell-bambu-case.zip).
+
+Settings in Bambu Studio:
+
+| Option | Value |
+| --- | --- |
+| Printer | X1C, X1E, P1S, P1P, A1, or anything with a 256 mm plate or bigger. Not the A1 mini (180 mm plate). |
+| Filament | PLA or PETG. All four pieces together take under 500 g. |
+| Profile | 0.20 mm Standard, 0.4 mm nozzle. The seams are designed around 0.2 mm layers. |
+| Supports | Off |
+| Brim | Off. The pieces are 246.7 mm deep, so a brim doesn't fit on the plate. |
+| Walls and infill | 3 wall loops, 15% infill |
+| Orientation | As imported: flat side down, one piece per plate. Don't flip or scale. |
+
+Print the two top halves first. They're thin and quick, and they let you test the fit before
+the long tray prints: push a switch into a hole (it should click in snugly) and slide the two
+halves together. If switches are too tight or too loose, change "X-Y hole compensation" in
+Bambu Studio and reprint.
+
+How the halves join:
+
+- **Tray:** lay both halves flat and slide them together sideways. Tongues on each half go under
+  small roofs on the other, which keeps the floor level across the seam. Once you're happy
+  with the fit, put a drop of superglue on each of the 9 tongues and slide them together for
+  good. Without glue it still holds, but the tray can flex along the seam.
+- **Top:** the two halves slide together the same way, on top of the PCB. No glue: the screws
+  hold them, and the middle screw goes through a tab on the left half.
+- The tray seam is 22 mm left of center and the top seam is in the center, so each shell
+  bridges the other's seam.
+
 ## Step 5: assembly, in short
 
 1. Solder on the **back** of the PCB: diodes (bar toward the silkscreen bar), 64 hotswap sockets,
@@ -120,7 +171,9 @@ If anything doesn't line up, stop: the board needs a fix first.
    double-tap reset, drag the file onto the "NICENANO" drive.
 4. Press the 15 inserts into the tray posts with a soldering iron. Lay the PCB on the posts, put
    the top shell on, push the switches through the top into the sockets, and fit 7 long screws
-   (through the PCB) and 8 short screws (palm area).
+   (through the PCB) and 8 short screws (palm area). With a home-printed case, join the two tray
+   halves first, and set the two top halves on the PCB about 1 cm apart before sliding them
+   together (step 4, option B).
 5. Drop the trackpad into its pocket, thick edge toward the keys.
 
 Keys can be remapped any time in [ZMK Studio](https://zmk.studio). Fn (bottom left) + Tab

@@ -1,0 +1,68 @@
+{
+  "printer": {
+    "plate_mm": [
+      256.0,
+      256.0
+    ],
+    "layer_height_mm": 0.2,
+    "supports": false
+  },
+  "size_mm": {
+    "width": 354.0,
+    "depth": 246.71,
+    "height_without_keys": 13.6,
+    "keycap_top_approx": 20.1
+  },
+  "pieces": {
+    "tray-left": {
+      "size_mm": [
+        161.0,
+        246.71,
+        9.6
+      ],
+      "volume_cm3": 98.5,
+      "watertight": true
+    },
+    "tray-right": {
+      "size_mm": [
+        205.0,
+        246.71,
+        9.6
+      ],
+      "volume_cm3": 123.9,
+      "watertight": true
+    },
+    "top-left": {
+      "size_mm": [
+        183.0,
+        246.71,
+        4.0
+      ],
+      "volume_cm3": 87.3,
+      "watertight": true
+    },
+    "top-right": {
+      "size_mm": [
+        182.0,
+        246.71,
+        4.0
+      ],
+      "volume_cm3": 87.0,
+      "watertight": true
+    }
+  },
+  "pla_grams_if_solid": 492,
+  "seams": {
+    "tray_x": -22.0,
+    "top_x": 0.0,
+    "tray_tongues": 9,
+    "top_tongues": 7
+  },
+  "screws": {
+    "through_pcb_M3x8": 7,
+    "palm_M3x6": 8,
+    "inserts_M3": 15
+  },
+  "pcb_support_posts": 29,
+  "problems": []
+}
