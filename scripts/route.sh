@@ -4,7 +4,7 @@
 #   output/<variant>/flatwell-routed.kicad_pcb  routed board (open in KiCad)
 #   output/<variant>/drc.json                   KiCad design-rule check report
 #   fab/<variant>/flatwell-gerbers.zip          upload this to PCBWay
-#   fab/<variant>/flatwell.kicad_pcb            copy of the routed board
+#   fab/<variant>/flatwell.kicad_pcb            copy of the routed board, with the Nullworks mark on the back
 #   fab/<variant>/flatwell-bom.csv              parts list for PCBWay assembly (diodes)
 #   fab/<variant>/flatwell-cpl.csv              where those parts go (bottom side)
 #   fab/<variant>/flatwell-{top,bottom}.svg     pictures of the board
@@ -48,6 +48,9 @@ echo "→ autorouting (a few minutes)"
 
 echo "→ importing routes"
 "$KPY" "$ROOT/scripts/kicad_route.py" import-ses "$BOARD" "$OUT/flatwell.ses" "$ROUTED"
+
+echo "→ silkscreen logo"
+"$KPY" "$ROOT/scripts/silk_logo.py" "$ROUTED"
 
 echo "→ design-rule check"
 if ! "$KCLI" pcb drc --format json --severity-error --exit-code-violations -o "$OUT/drc.json" "$ROUTED" > /dev/null; then
